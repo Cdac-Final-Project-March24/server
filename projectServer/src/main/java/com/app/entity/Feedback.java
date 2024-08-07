@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import lombok.ToString;
 @ToString(exclude = {"customer","offering"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Feedback {
+public class Feedback extends BaseEntity {
 	
 	@Column(nullable=false)
 	private int rating;
