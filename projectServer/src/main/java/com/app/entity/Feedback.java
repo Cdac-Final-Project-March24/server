@@ -17,7 +17,7 @@ import lombok.ToString;
 @Entity
 @Getter
 @Setter
-@ToString(exclude = {"customer","offering"})
+@ToString(exclude = {"customer","business"})
 @NoArgsConstructor
 @AllArgsConstructor
 public class Feedback extends BaseEntity {
@@ -30,8 +30,9 @@ public class Feedback extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="customer_id", nullable = false)
 	private User customer;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="offring_id", nullable = false)
-	private Offering offering;
+	@JoinColumn(name="business_id", nullable = false)
+	private Business business;
 
 }

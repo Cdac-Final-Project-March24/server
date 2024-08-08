@@ -1,14 +1,11 @@
 package com.app.entity;
 
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,39 +13,29 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name="offerings")
+@Table(name="suborder")
 @Getter
 @Setter
-@ToString(exclude = {"business"})
+@ToString(exclude = {"order","offering"})
 @NoArgsConstructor
 @AllArgsConstructor
-public class Offering extends BaseEntity {
-	@Column(nullable = false)
-	private String name;
-	
-	@Column(nullable = false)
-	private String description;
-	
-	@Column(nullable = false)
-	private double price;
-	
-	private String image;
-	@Enumerated(EnumType.STRING)
-	private OfferingType type;
+public class SubOrder extends BaseEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "business_id", nullable = false)
-	private Business business;
+	@JoinColumn(name ="order_id", nullable =false)
+	private Order order;
 	
-	private long orderCount;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name ="offering_id", nullable =false)
+	private Offering offering;
 	
-	
+	private int quantity;
 	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((offering == null) ? 0 : offering.hashCode());
 		return result;
 	}
 
@@ -60,11 +47,11 @@ public class Offering extends BaseEntity {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Offering other = (Offering) obj;
-		if (name == null) {
-			if (other.name != null)
+		SubOrder other = (SubOrder) obj;
+		if (offering == null) {
+			if (other.offering != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!offering.equals(other.offering))
 			return false;
 		return true;
 	}

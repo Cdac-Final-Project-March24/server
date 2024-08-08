@@ -30,5 +30,7 @@ public class Business extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id", nullable = false)
 	private User owner;
+	
+	private long orderCount;
 
 }

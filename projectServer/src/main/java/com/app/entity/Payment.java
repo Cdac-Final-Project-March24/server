@@ -18,9 +18,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class Payment extends BaseEntity {
+	
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private PaymentType type;
-	private String status;
+	
+	private boolean status;
 
 }
