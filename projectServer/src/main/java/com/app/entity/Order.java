@@ -31,14 +31,18 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Order extends BaseEntity {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name ="user_id", nullable =false)
-	private User user;
+	private User customer;
+	
+	@ManyToOne
+	@JoinColumn(name ="business_id", nullable =false)
+	private Business business;
 	
 	@OneToMany(mappedBy ="order", cascade = CascadeType.ALL)
 	private Set<SubOrder> subOrder = new HashSet<SubOrder>();
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="payment_id",nullable = false)
 	private Payment payment;
 	
