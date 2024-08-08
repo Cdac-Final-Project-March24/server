@@ -4,8 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.app.custom_exception.DuplicateException;
 import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dao.BusinessDao;
 import com.app.dao.UserDao;
