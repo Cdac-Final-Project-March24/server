@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dao.BusinessDao;
 import com.app.dao.UserDao;
+import com.app.dto.AddBusinessDto;
 import com.app.dto.ApiResponse;
 import com.app.dto.UpdateBusinessDto;
 import com.app.entity.Business;
@@ -36,6 +37,15 @@ public class BusinessServiceImpl implements BusinessService {
 		userDao.save(owner);
 		businessDao.save(business);
 		return new ApiResponse("Updated successfully");
+	}
+
+	@Override
+	public AddBusinessDto addBusiness(AddBusinessDto newBusiness, Long oId) {
+		Business business = mapper.map(newBusiness, Business.class);
+		User owner = userDao.findById(oId)
+				.orElseThrow(()->new ResourceNotFoundException("Invalid owner id"));
+		business.setOwner(owner);
+		return mapper.map(businessDao.save(business), AddBusinessDto.class);
 	}
 
 }

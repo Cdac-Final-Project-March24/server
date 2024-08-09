@@ -28,7 +28,7 @@ public class AddUserDto {
 	@NotEmpty(message = "User contact cannot be blank")
 	@Min(value = 10, message = "Contact number must be minimum 10 characters")
 	private String mobileNumber;
-	@NotEmpty(message = "Role cannot be blank")
+
 	private Role role;
 
 }
