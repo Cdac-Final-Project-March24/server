@@ -14,7 +14,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name="business")
 @Getter
 @Setter
 @ToString(exclude = {"owner"})
