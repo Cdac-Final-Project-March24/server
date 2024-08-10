@@ -3,12 +3,15 @@ package com.app.service;
 import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,8 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dao.BusinessDao;
 import com.app.dao.OfferingDao;
-import com.app.dao.UserDao;
 import com.app.dto.AddOfferingDto;
+import com.app.dto.GetOfferingDto;
 import com.app.entity.Business;
 import com.app.entity.Offering;
 import com.app.entity.OfferingType;
@@ -29,31 +32,41 @@ public class OfferingServiceImpl implements OfferingService {
 	private OfferingDao offeringDao;
 	@Autowired
 	private BusinessDao businessDao;
-	
-	@Value("${file.upload.location}")
-	private String uploadFolder;
+	@Autowired
+	private ImageHandelingService imageService;
 	
 	@Autowired
 	private ModelMapper mapper;
 	
-	@PostConstruct
-	public void init() throws IOException {
-		File folder = new File(uploadFolder);
-		if (folder.exists()) {
-			System.out.println("folder exists alrdy !");
-		} else {
-			folder.mkdir();
-			System.out.println("created a folder !");
-		}
-	}
-	
-	public AddOfferingDto addOffering(Long bId, MultipartFile img, String name, String description, double price) throws IOException {
-		String path = uploadFolder.concat(img.getOriginalFilename());
-		System.out.println(path);
-		writeByteArrayToFile(new File(path), img.getBytes());
+	@Override
+	public AddOfferingDto addOffering(Long bId, MultipartFile img, AddOfferingDto newOffering) throws IOException {
+		String path = imageService.saveImage(img); // save image and get its path
 		Business business = businessDao.findById(bId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid business id"));
-		Offering product = new Offering(name, description, price, path, OfferingType.PRODUCT, business, 0);
-		return mapper.map(offeringDao.save(product), AddOfferingDto.class);
+		Offering offering = mapper.map(newOffering, Offering.class);
+		offering.setBusiness(business);
+		offering.setImage(("http://localhost:8080/").concat(path)); // add url to image path
+		return mapper.map(offeringDao.save(offering), AddOfferingDto.class);
+	}
+
+	@Override
+	public List<GetOfferingDto> getAllOfferings(Long bId, OfferingType type)  {
+		if(!businessDao.existsById(bId)) throw new ResourceNotFoundException("Invalid Business Id");
+		return offeringDao.findByBusinessIdAndType(bId, type, Sort.by("updatedOn")) // Latest offerings
+				.stream().map(o -> mapper.map(o, GetOfferingDto.class)) // convert entity to dto for every element
+				.collect(Collectors.toList());
+	}
+	
+	@Override
+	public AddOfferingDto updateOffering(Long id, MultipartFile img, AddOfferingDto newOffering) throws IOException {
+		Offering offering = offeringDao.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Invalid offering id"));
+		mapper.map(newOffering, offering);
+		// Check if image is sent by user for update or not
+		if(img.getOriginalFilename() != null && !img.getOriginalFilename().isBlank()) {
+			String path = imageService.saveImage(img);
+			offering.setImage(("http://localhost:8080/").concat(path));
+		}
+		return mapper.map(offering, AddOfferingDto.class);
 	}
 }

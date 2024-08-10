@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.AddBusinessDto;
-import com.app.dto.UpdateBusinessDto;
 import com.app.service.BusinessService;
 
 @RestController
@@ -30,11 +29,11 @@ public class BusinessController {
 				.body(businessService.addBusiness(newBusiness, oId));
 	}
 	
-	@PutMapping("/{bId}/{oId}")
-	public ResponseEntity<?> updateBusiness(@RequestBody @Valid UpdateBusinessDto newBusiness, @PathVariable Long bId,@PathVariable Long oId){
+	@PutMapping("/{bId}")
+	public ResponseEntity<?> updateBusiness(@RequestBody @Valid AddBusinessDto newBusiness, @PathVariable Long bId){
 		System.out.println(newBusiness);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(businessService.updateBusiness(newBusiness, bId, oId));
+				.body(businessService.updateBusiness(newBusiness, bId));
 	}
 }

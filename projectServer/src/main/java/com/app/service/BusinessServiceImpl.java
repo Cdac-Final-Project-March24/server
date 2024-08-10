@@ -9,7 +9,6 @@ import com.app.dao.BusinessDao;
 import com.app.dao.UserDao;
 import com.app.dto.AddBusinessDto;
 import com.app.dto.ApiResponse;
-import com.app.dto.UpdateBusinessDto;
 import com.app.entity.Business;
 import com.app.entity.User;
 
@@ -24,18 +23,10 @@ public class BusinessServiceImpl implements BusinessService {
 	private ModelMapper mapper;
 
 	@Override
-	public ApiResponse updateBusiness(UpdateBusinessDto newBusiness, Long bId, Long oId) {
-		Business business = mapper.map(newBusiness, Business.class);
-		business.setId(bId);
-		User owner = mapper.map(newBusiness, User.class);
-		owner.setId(oId);
-		business.setOwner(owner);
-		if(!userDao.existsById(oId)) 
-			throw new ResourceNotFoundException("Owner not found");
-		if(!businessDao.existsById(bId)) 
-			throw new ResourceNotFoundException("Business not found");
-		userDao.save(owner);
-		businessDao.save(business);
+	public ApiResponse updateBusiness(AddBusinessDto newBusiness, Long bId) {
+		Business orignalBusiness = businessDao.findById(bId)
+				.orElseThrow(()-> new ResourceNotFoundException("Invalid Business Id"));
+		mapper.map(newBusiness, orignalBusiness);
 		return new ApiResponse("Updated successfully");
 	}
 
