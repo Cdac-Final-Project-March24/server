@@ -1,16 +1,13 @@
 package com.app.service;
 
-import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.annotation.PostConstruct;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +49,7 @@ public class OfferingServiceImpl implements OfferingService {
 	@Override
 	public List<GetOfferingDto> getAllOfferings(Long bId, OfferingType type)  {
 		if(!businessDao.existsById(bId)) throw new ResourceNotFoundException("Invalid Business Id");
-		return offeringDao.findByBusinessIdAndType(bId, type, Sort.by("updatedOn")) // Latest offerings
+		return offeringDao.findByBusinessIdAndType(bId, type, Sort.by("updatedOn").descending()) // Latest offerings
 				.stream().map(o -> mapper.map(o, GetOfferingDto.class)) // convert entity to dto for every element
 				.collect(Collectors.toList());
 	}
@@ -68,5 +65,13 @@ public class OfferingServiceImpl implements OfferingService {
 			offering.setImage(("http://localhost:8080/").concat(path));
 		}
 		return mapper.map(offering, AddOfferingDto.class);
+	}
+
+	@Override
+	public List<GetOfferingDto> getTopOfferings(double latitude, double longitude, OfferingType type, int limit) {
+		return offeringDao
+				.findTopClosest(type, latitude, longitude, PageRequest.of(0, limit, Sort.by("orderCount").descending()))
+				.stream().map(o -> mapper.map(o, GetOfferingDto.class))
+				.collect(Collectors.toList());
 	}
 }

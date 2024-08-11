@@ -30,6 +30,7 @@ public class OfferingController {
 	private OfferingService offeringService;
 	
 	// @RequestPart is used to get both data and file from client
+	// Add product
 	@PostMapping(value = "/product/{bId}", 
 			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, 
 					MediaType.APPLICATION_JSON_VALUE})
@@ -41,12 +42,14 @@ public class OfferingController {
 				.body(offeringService.addOffering(bId, img, newProduct));
 	}
 	
+	// Get all products for a business
 	@GetMapping(value = "/product/{bId}")
 	public ResponseEntity<?> getAllProducts(@PathVariable Long bId) throws IOException{
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(offeringService.getAllOfferings(bId, OfferingType.PRODUCT));
 	}
 	
+	// Update a product
 	@PutMapping(value = "/product/{id}", 
 			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, 
 					MediaType.APPLICATION_JSON_VALUE})
@@ -58,6 +61,15 @@ public class OfferingController {
 				.body(offeringService.updateOffering(id, img, newProduct));
 	}
 	
+	// Get top 10 products close to a location
+	@GetMapping("/top-products")
+	public ResponseEntity<?> getTopProducts(
+			@RequestParam double latitude, @RequestParam double longitude){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(offeringService.getTopOfferings(latitude, longitude, OfferingType.PRODUCT, 10));
+	}
+	
+	// Add a service
 	@PostMapping(value = "/service/{bId}", 
 			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, 
 					MediaType.APPLICATION_JSON_VALUE})
@@ -69,12 +81,14 @@ public class OfferingController {
 				.body(offeringService.addOffering(bId, img, newProduct));
 	}
 	
+	// Get all services for a business
 	@GetMapping(value = "/service/{bId}")
 	public ResponseEntity<?> getAllServices(@PathVariable Long bId) throws IOException{
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(offeringService.getAllOfferings(bId, OfferingType.SERVICE));
 	}
 	
+	// Update a service
 	@PutMapping(value = "/service/{id}", 
 			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, 
 					MediaType.APPLICATION_JSON_VALUE})
@@ -84,5 +98,13 @@ public class OfferingController {
 		newProduct.setType(OfferingType.SERVICE);
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(offeringService.updateOffering(id, img, newProduct));
+	}
+	
+	// Get top 10 products close to a location
+	@GetMapping("/top-services")
+	public ResponseEntity<?> getTopServices(
+			@RequestParam double latitude, @RequestParam double longitude){
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(offeringService.getTopOfferings(latitude, longitude, OfferingType.SERVICE, 10));
 	}
 }

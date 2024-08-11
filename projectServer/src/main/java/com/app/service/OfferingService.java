@@ -11,6 +11,10 @@ import com.app.entity.OfferingType;
 
 public interface OfferingService {
 	AddOfferingDto addOffering(Long bId, MultipartFile img, AddOfferingDto newOffering) throws IOException;
+	
 	List<GetOfferingDto> getAllOfferings(Long bId, OfferingType type) throws IOException;
+	
 	AddOfferingDto updateOffering(Long bId, MultipartFile img, AddOfferingDto newOffering) throws IOException;
+	
+	List<GetOfferingDto> getTopOfferings(double latitude, double longitude, OfferingType type, int limit);
 }
