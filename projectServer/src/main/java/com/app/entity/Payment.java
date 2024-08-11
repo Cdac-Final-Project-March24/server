@@ -24,5 +24,6 @@ public class Payment extends BaseEntity {
 	private PaymentType type;
 	
 	private boolean status;
-
+	
+	private String upiId;
 }

@@ -23,7 +23,7 @@ import lombok.ToString;
 public class Feedback extends BaseEntity {
 	
 	@Column(nullable=false)
-	private int rating;
+	private Integer rating;
 	
 	private String review;
 	

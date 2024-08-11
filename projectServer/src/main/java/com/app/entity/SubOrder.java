@@ -6,6 +6,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +31,7 @@ public class SubOrder extends BaseEntity {
 	@JoinColumn(name ="offering_id", nullable =false)
 	private Offering offering;
 	
-	private int quantity;
+	private Integer quantity = 0;
 	
 	@Override
 	public int hashCode() {

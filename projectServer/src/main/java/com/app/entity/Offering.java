@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Offering extends BaseEntity {
-	@Column(nullable = false)
+	@Column(nullable = false, length = 30)
 	private String name;
 	
 	@Column(nullable = false)
@@ -32,6 +34,7 @@ public class Offering extends BaseEntity {
 	private double price;
 	
 	private String image;
+	
 	@Enumerated(EnumType.STRING)
 	private OfferingType type;
 	
@@ -39,8 +42,7 @@ public class Offering extends BaseEntity {
 	@JoinColumn(name = "business_id", nullable = false)
 	private Business business;
 	
-	private long orderCount;
-	
+	private Long orderCount = 0L;
 	
 	
 	@Override
