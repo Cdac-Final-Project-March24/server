@@ -25,6 +25,7 @@ public class OrderController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(orderService.getAllOrders(bId));
 	}
+	
 	@PutMapping("/status/{id}")
 	public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestParam Status status){
 		System.out.println(status);

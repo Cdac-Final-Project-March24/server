@@ -27,6 +27,8 @@ public class Feedback extends BaseEntity {
 	
 	private String review;
 	
+	private String reply;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="customer_id", nullable = false)
 	private User customer;
