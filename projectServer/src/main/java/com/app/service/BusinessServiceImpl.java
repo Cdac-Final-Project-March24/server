@@ -1,9 +1,13 @@
 package com.app.service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,6 +53,15 @@ public class BusinessServiceImpl implements BusinessService {
 		String path = imageService.saveImage(img); // save image and get its path
 		business.setCover((("http://localhost:8080/").concat(path)));
 		return mapper.map(businessDao.save(business), AddBusinessDto.class);
+	}
+	
+	@Override
+	public List<AddBusinessDto> getTopBusiness(double latitude, double longitude, int limit){
+		return businessDao
+				.findTopClosest(latitude, longitude, 
+						PageRequest.of(0, limit, Sort.by("orderCount").descending()))
+				.stream().map(b -> mapper.map(b, AddBusinessDto.class))
+				.collect(Collectors.toList());
 	}
 
 }
