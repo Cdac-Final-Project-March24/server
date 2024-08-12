@@ -10,7 +10,7 @@ import com.app.dto.ApiResponse;
 
 public interface BusinessService {
 	
-	AddBusinessDto addBusiness(AddBusinessDto newBusiness, MultipartFile img, Long oId) throws IOException;
+	ApiResponse addBusiness(AddBusinessDto newBusiness, MultipartFile img, Long oId) throws IOException;
 	ApiResponse updateBusiness(AddBusinessDto newBusiness, MultipartFile img, Long bId) throws IOException;
 	List<AddBusinessDto> getTopBusiness(double latitude, double longitude, int limit);
 

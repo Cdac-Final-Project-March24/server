@@ -41,18 +41,19 @@ public class BusinessServiceImpl implements BusinessService {
 			String path = imageService.saveImage(img);
 			orignalBusiness.setCover(("http://localhost:8080/").concat(path));
 		}
-		return new ApiResponse("Updated successfully");
+		return new ApiResponse("Business Updated successfully");
 	}
 
 	@Override
-	public AddBusinessDto addBusiness(AddBusinessDto newBusiness, MultipartFile img, Long oId) throws IOException {
+	public ApiResponse addBusiness(AddBusinessDto newBusiness, MultipartFile img, Long oId) throws IOException {
 		Business business = mapper.map(newBusiness, Business.class);
 		User owner = userDao.findById(oId)
 				.orElseThrow(()->new ResourceNotFoundException("Invalid owner id"));
 		business.setOwner(owner);
 		String path = imageService.saveImage(img); // save image and get its path
 		business.setCover((("http://localhost:8080/").concat(path)));
-		return mapper.map(businessDao.save(business), AddBusinessDto.class);
+		businessDao.save(business);
+		return new ApiResponse("Business Added successfully");
 	}
 	
 	@Override

@@ -17,6 +17,7 @@ import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dao.BusinessDao;
 import com.app.dao.OfferingDao;
 import com.app.dto.AddOfferingDto;
+import com.app.dto.ApiResponse;
 import com.app.dto.GetOfferingDto;
 import com.app.entity.Business;
 import com.app.entity.Offering;
@@ -36,14 +37,15 @@ public class OfferingServiceImpl implements OfferingService {
 	private ModelMapper mapper;
 	
 	@Override
-	public AddOfferingDto addOffering(Long bId, MultipartFile img, AddOfferingDto newOffering) throws IOException {
+	public ApiResponse addOffering(Long bId, MultipartFile img, AddOfferingDto newOffering) throws IOException {
 		String path = imageService.saveImage(img); // save image and get its path
 		Business business = businessDao.findById(bId)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid business id"));
 		Offering offering = mapper.map(newOffering, Offering.class);
 		offering.setBusiness(business);
 		offering.setImage(("http://localhost:8080/").concat(path)); // add url to image path
-		return mapper.map(offeringDao.save(offering), AddOfferingDto.class);
+		offeringDao.save(offering);
+		return new ApiResponse("Offering Added successfully");
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class OfferingServiceImpl implements OfferingService {
 	}
 	
 	@Override
-	public AddOfferingDto updateOffering(Long id, MultipartFile img, AddOfferingDto newOffering) throws IOException {
+	public ApiResponse updateOffering(Long id, MultipartFile img, AddOfferingDto newOffering) throws IOException {
 		Offering offering = offeringDao.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid offering id"));
 		mapper.map(newOffering, offering);
@@ -64,7 +66,8 @@ public class OfferingServiceImpl implements OfferingService {
 			String path = imageService.saveImage(img);
 			offering.setImage(("http://localhost:8080/").concat(path));
 		}
-		return mapper.map(offering, AddOfferingDto.class);
+		
+		return new ApiResponse("Offering Updated successfully");
 	}
 
 	@Override
