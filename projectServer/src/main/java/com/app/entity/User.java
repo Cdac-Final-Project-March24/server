@@ -40,7 +40,7 @@ public class User extends BaseEntity {
 	private String mobileNumber;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(length = 10)
+	@Column(length = 20)
 	private Role role;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

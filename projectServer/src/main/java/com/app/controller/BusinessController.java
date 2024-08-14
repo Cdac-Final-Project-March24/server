@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,11 +27,12 @@ import com.app.service.BusinessService;
 
 @RestController
 @RequestMapping("/business")
+@CrossOrigin
 public class BusinessController {
 
 	@Autowired
 	private BusinessService businessService;
-	
+
 	@PostMapping(value = "/{oId}", 
 			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, 
 					MediaType.APPLICATION_JSON_VALUE})
@@ -37,24 +40,24 @@ public class BusinessController {
 			@PathVariable Long oId,
 			@RequestPart @Valid AddBusinessDto newBusiness,
 			@RequestPart MultipartFile img)throws IOException{
-		
+
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(businessService.addBusiness(newBusiness, img, oId));
 	}
-	
+
 	@PutMapping(value = "/{bId}", 
 			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, 
 					MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> updateBusiness(@PathVariable Long bId,
 			@RequestPart(required = false) @Valid AddBusinessDto newBusiness,
 			@RequestPart(required = false) MultipartFile img)throws IOException{
-		
+
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(businessService.updateBusiness(newBusiness, img, bId));
 	}
-	
+
 	@GetMapping("/top-business")
 	public ResponseEntity<?> getTopBusiness(
 			@RequestParam double latitude, @RequestParam double longitude){
@@ -66,44 +69,40 @@ public class BusinessController {
 	{
 		return ResponseEntity.status(HttpStatus.OK).body(businessService.getBusinessDetails(Id)); //Add DTO to send exact details; 
 	}
-	
+
 	@GetMapping("/MostPreferredProduct")
 	public ResponseEntity<?> getMostPreferredProduct(@RequestParam Long Id){
 		OfferingType type = OfferingType.PRODUCT;
 		return ResponseEntity.status(HttpStatus.OK).body(businessService.getMostPreferredOffering(type, Id));//Create DTO here as well
 	}
-	
+
 	@GetMapping("/MostPreferredService")
 	public ResponseEntity<?> getMostPreferredService(@RequestParam Long Id){
 		OfferingType type = OfferingType.SERVICE;
 		return ResponseEntity.status(HttpStatus.OK).body(businessService.getMostPreferredOffering(type, Id));//Create DTO here as well
 	}
 	
-	 @DeleteMapping("/{id}")
-	    public ResponseEntity<String> deleteBusiness(@PathVariable("id") Long id) {
-	        boolean isDeleted = businessService.softDeleteBusiness(id);
-	        
-	        if (isDeleted) {
-	            return ResponseEntity.ok("Business deleted successfully");
-	        } else {
-	            return ResponseEntity.status(404).body("Business not found");
-	        }
-	    }
-	 
-	 
-	 @PostMapping("/restore/{id}")
-	    public ResponseEntity<String> restoreBusiness(@PathVariable("id") Long id) {
-	        boolean isRestored = businessService.softRestoreBusiness(id);
-	        
-	        if (isRestored) {
-	            return ResponseEntity.ok("Business restored successfully");
-	        } else {
-	            return ResponseEntity.status(404).body("Business not found or not deleted");
-	        }
-	    }
-	 
-	 
 	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteBusiness(@PathVariable("id") Long id) {
+		boolean isDeleted = businessService.softDeleteBusiness(id);
 
-	
+		if (isDeleted) {
+			return ResponseEntity.ok("Business deleted successfully");
+		} else {
+			return ResponseEntity.status(404).body("Business not found");
+		}
+	}
+
+	@PostMapping("/restore/{id}")
+	public ResponseEntity<String> restoreBusiness(@PathVariable("id") Long id) {
+		boolean isRestored = businessService.softRestoreBusiness(id);
+
+		if (isRestored) {
+			return ResponseEntity.ok("Business restored successfully");
+		} else {
+			return ResponseEntity.status(404).body("Business not found or not deleted");
+		}
+	}
+
 }

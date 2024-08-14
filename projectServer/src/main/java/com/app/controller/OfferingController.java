@@ -120,9 +120,9 @@ public class OfferingController {
     }
 	
 	//get offering details 
-	  @GetMapping("/{id}")
-	    public ResponseEntity<Offering> getOfferingById(@PathVariable("id") Long id) {
-	        Offering offering = offeringService.getOfferingById(id);
-	        return ResponseEntity.ok(offering);
-	    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Offering> getOfferingById(@PathVariable("id") Long id) {
+	    Offering offering = offeringService.getOfferingById(id);
+	    return ResponseEntity.ok(offering);
+	}
 }

@@ -48,15 +48,15 @@ public class UserController {
 		// invoke auth mgr's authenticate method;
 		Authentication verifiedToken = authMgr.authenticate(token);
 		// => authentication n authorization successful !
-		System.out.println(verifiedToken.getPrincipal());// custom user details object
+		System.out.println("Principal: "+verifiedToken.getPrincipal());// custom user details object
 		// create JWT n send it to the clnt in response
 		SigninResponse resp = new SigninResponse(jwtUtils.generateJwtToken(verifiedToken),
-				"success");
+				"success", request.getEmail());
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);
 	}
 
 	// User Registration
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<?> addUser(@RequestBody @Valid AddUserDto newUser) {
 		System.out.println(newUser);
 		return ResponseEntity

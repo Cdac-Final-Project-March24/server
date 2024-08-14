@@ -4,6 +4,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.app.entity.Role;
 
 import lombok.Getter;
@@ -22,7 +24,7 @@ public class AddUserDto {
 	private String email;
 	
 	@NotEmpty(message = "User password cannot be blank")
-	@Min(value = 6, message = "Password length must be minimum 6 characters")
+	@Length(min = 6, message = "Password length must be minimum 6 characters")
 	private String password;
 	
 	@NotEmpty(message = "User contact cannot be blank")
@@ -47,9 +49,9 @@ public class AddUserDto {
 	@NotEmpty(message = "User Zip cannot be blank")
 	private String zip;
 	
-	@NotEmpty(message = "Latitude cannot be blank")
+	@NotNull(message = "Latitude cannot be blank")
 	private Double longitude;
 	
-	@NotEmpty(message = "Longitude cannot be blank")
+	@NotNull(message = "Longitude cannot be blank")
 	private Double latitude;
 }
