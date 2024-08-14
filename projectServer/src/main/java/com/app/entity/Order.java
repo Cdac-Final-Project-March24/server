@@ -38,7 +38,7 @@ public class Order extends BaseEntity {
 	@OneToMany(mappedBy ="order", cascade = CascadeType.ALL)
 	private Set<SubOrder> subOrder = new HashSet<SubOrder>();
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="payment_id",nullable = false)
 	private Payment payment;
 	
@@ -49,4 +49,19 @@ public class Order extends BaseEntity {
 			orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn
 	private Address address;
+	
+	// Add and remove for bi directional relationship
+	public void addSubOrder(SubOrder sub) {
+		this.subOrder.add(sub);
+		sub.setOrder(this);
+	}
+	public void removeSubOrder(SubOrder sub) {
+		this.subOrder.remove(sub);
+		sub.setOrder(null);
+	}
+	public Order(User customer, Business business, Status status) {
+		this.customer = customer;
+		this.business = business;
+		this.status = status;
+	}
 }

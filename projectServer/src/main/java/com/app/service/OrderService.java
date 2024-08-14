@@ -9,4 +9,5 @@ import com.app.entity.Status;
 public interface OrderService {
 	List<Order> getAllOrders(Long bId);
 	public ApiResponse updateOrderStatus(Status status, Long id);
+	ApiResponse addToCart(Long customerId, Long businessId, Long offeringId);
 }

@@ -1,12 +1,9 @@
 package com.app.dto;
 
-import java.time.LocalDateTime;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.app.entity.Address;
 import com.app.entity.Role;
 
 import lombok.Getter;
@@ -28,13 +25,31 @@ public class AddUserDto {
 	@Min(value = 6, message = "Password length must be minimum 6 characters")
 	private String password;
 	
-	@NotNull(message = "User address cannot be null")
-	private Address address;
-	
 	@NotEmpty(message = "User contact cannot be blank")
 	@Min(value = 10, message = "Contact number must be minimum 10 characters")
 	private String mobileNumber;
 
+	@NotNull(message = "Role cannot be null")
 	private Role role;
 
+	@NotEmpty(message = "User Address cannot be blank")
+	private String address;
+	
+	@NotEmpty(message = "User City cannot be blank")
+	private String city;
+	
+	@NotEmpty(message = "User State cannot be blank")
+	private String state;
+	
+	@NotEmpty(message = "User Country cannot be blank")
+	private String country;
+	
+	@NotEmpty(message = "User Zip cannot be blank")
+	private String zip;
+	
+	@NotEmpty(message = "Latitude cannot be blank")
+	private Double longitude;
+	
+	@NotEmpty(message = "Longitude cannot be blank")
+	private Double latitude;
 }

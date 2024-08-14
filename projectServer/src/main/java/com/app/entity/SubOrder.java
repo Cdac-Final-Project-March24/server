@@ -31,7 +31,7 @@ public class SubOrder extends BaseEntity {
 	@JoinColumn(name ="offering_id", nullable =false)
 	private Offering offering;
 	
-	private Integer quantity = 0;
+	private Integer quantity = 1;
 	
 	@Override
 	public int hashCode() {
