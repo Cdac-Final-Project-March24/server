@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,17 +34,17 @@ public class BusinessController {
 	@Autowired
 	private BusinessService businessService;
 
-	@PostMapping(value = "/{oId}", 
+	@PostMapping(value = "/register", 
 			consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, 
 					MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> addBusiness( 
-			@PathVariable Long oId,
 			@RequestPart @Valid AddBusinessDto newBusiness,
 			@RequestPart MultipartFile img)throws IOException{
-
+		String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		System.out.println(email);
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(businessService.addBusiness(newBusiness, img, oId));
+				.body(businessService.addBusiness(newBusiness, img, email));
 	}
 
 	@PutMapping(value = "/{bId}", 
@@ -67,7 +68,8 @@ public class BusinessController {
 	@GetMapping("/business-details")
 	public ResponseEntity<?> getBussinessDetails(@RequestParam Long Id)
 	{
-		return ResponseEntity.status(HttpStatus.OK).body(businessService.getBusinessDetails(Id)); //Add DTO to send exact details; 
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(businessService.getBusinessDetails(Id)); //Add DTO to send exact details; 
 	}
 
 	@GetMapping("/MostPreferredProduct")
@@ -80,6 +82,13 @@ public class BusinessController {
 	public ResponseEntity<?> getMostPreferredService(@RequestParam Long Id){
 		OfferingType type = OfferingType.SERVICE;
 		return ResponseEntity.status(HttpStatus.OK).body(businessService.getMostPreferredOffering(type, Id));//Create DTO here as well
+	}
+	
+	@GetMapping("/owner")
+	public ResponseEntity<?> getBusinessByOwner(){
+		String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return ResponseEntity.status(HttpStatus.OK)
+				.body(businessService.getBusinessByOwner(email));
 	}
 	
 	

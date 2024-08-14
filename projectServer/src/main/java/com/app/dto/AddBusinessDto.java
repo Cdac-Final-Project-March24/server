@@ -13,6 +13,8 @@ import lombok.ToString;
 @Getter
 @ToString
 public class AddBusinessDto {
+	@JsonProperty(access = Access.READ_ONLY)
+	private Long id;
 	
 	@NotEmpty(message = "Business name cannot be blank")
 	private String name;

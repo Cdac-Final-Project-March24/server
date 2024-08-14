@@ -63,8 +63,10 @@ public class OfferingServiceImpl implements OfferingService {
 		Offering offering = offeringDao.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid offering id"));
 		mapper.map(newOffering, offering);
+		System.out.println(offering);
 		// Check if image is sent by user for update or not
-		if(img.getOriginalFilename() != null && !img.getOriginalFilename().isBlank()) {
+		System.out.println(img);
+		if(img != null && img.getOriginalFilename() != null && !img.getOriginalFilename().isBlank()) {
 			String path = imageService.saveImage(img);
 			offering.setImage(("http://localhost:8080/").concat(path));
 		}
@@ -81,19 +83,17 @@ public class OfferingServiceImpl implements OfferingService {
 	}
 
 	@Override
-	public Offering getOfferingById(Long id) { //get offering deatil..
-		 Optional<Offering> offering = offeringDao.findById(id);
-	        if (offering.isPresent()) {
-	            return offering.get();
-	        } else {
-	            throw new RuntimeException("Offering not found for id :: " + id);
-	        }
+	public AddOfferingDto getOfferingById(Long id) { //get offering deatil..
+		 Offering offering = offeringDao.findById(id)
+				 .orElseThrow(()-> new ResourceNotFoundException("Invalid Offering id"));
+		 return mapper.map(offering, AddOfferingDto.class);
 		
 	}
 	
 	@Override
     public List<OfferingReview> getReviewsByOfferingId(Long offeringId) { //get offering reviews.
-        Offering offering = getOfferingById(offeringId); 
+        Offering offering = offeringDao.findById(offeringId)
+        		.orElseThrow(()-> new ResourceNotFoundException("Invalid Offering id"));; 
         return offering.getReviews(); 
     }
 }

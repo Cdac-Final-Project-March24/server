@@ -19,6 +19,7 @@ import com.app.dao.OfferingDao;
 import com.app.dao.UserDao;
 import com.app.dto.AddBusinessDto;
 import com.app.dto.ApiResponse;
+import com.app.dto.GetOfferingDto;
 import com.app.entity.Business;
 import com.app.entity.Offering;
 import com.app.entity.OfferingType;
@@ -52,10 +53,10 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public ApiResponse addBusiness(AddBusinessDto newBusiness, MultipartFile img, Long oId) throws IOException {
+	public ApiResponse addBusiness(AddBusinessDto newBusiness, MultipartFile img, String email) throws IOException {
 		Business business = mapper.map(newBusiness, Business.class);
-		User owner = userDao.findById(oId)
-				.orElseThrow(()->new ResourceNotFoundException("Invalid owner id"));
+		User owner = userDao.findByEmail(email)
+				.orElseThrow(()->new ResourceNotFoundException("Invalid owner email"));
 		business.setOwner(owner);
 		String path = imageService.saveImage(img); // save image and get its path
 		business.setCover((("http://localhost:8080/").concat(path)));
@@ -79,13 +80,14 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public List<Offering> getMostPreferredOffering(OfferingType Type, Long Business_ID){
+	public List<GetOfferingDto> getMostPreferredOffering(OfferingType Type, Long Business_ID){
 		List<Offering> mostPrefOff = offeringDao.findMostPreferredOffering(Type,Business_ID);
-		return mostPrefOff;
+		return mostPrefOff.stream()
+				.map(o -> mapper.map(o, GetOfferingDto.class))
+				.collect(Collectors.toList());
 	}
 	
 	@Override
-	@Transactional
     public boolean softDeleteBusiness(Long id) {
         Optional<Business> businessOpt = businessDao.findById(id);
 
@@ -100,7 +102,6 @@ public class BusinessServiceImpl implements BusinessService {
     }
 	
 	@Override
-	@Transactional
     public boolean softRestoreBusiness(Long id) {
         Optional<Business> businessOpt = businessDao.findById(id);
 
@@ -113,4 +114,13 @@ public class BusinessServiceImpl implements BusinessService {
             return false;
         }
     }
+	
+	@Override
+	public AddBusinessDto getBusinessByOwner(String email) {
+		User user = userDao.findByEmail(email)
+				.orElseThrow(()-> new ResourceNotFoundException("Invalid user"));
+		Business business = businessDao.findByOwner(user)
+				.orElseThrow(()-> new ResourceNotFoundException("Business not found"));
+		return mapper.map(business, AddBusinessDto.class);
+	}
 }

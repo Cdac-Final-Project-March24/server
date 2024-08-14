@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.dto.AddUserDto;
 import com.app.dto.SigninRequest;
 import com.app.dto.SigninResponse;
+import com.app.security.CustomUserDetails;
 import com.app.security.JwtUtils;
 import com.app.dto.UpdateUserRequestDto;
 import com.app.entity.User;
@@ -48,8 +50,10 @@ public class UserController {
 		// invoke auth mgr's authenticate method;
 		Authentication verifiedToken = authMgr.authenticate(token);
 		// => authentication n authorization successful !
-		System.out.println("Principal: "+verifiedToken.getPrincipal());// custom user details object
+		// CustomUserDetails userPrincipal = (CustomUserDetails) verifiedToken.getPrincipal();
+		// System.out.println("Principal: "+ userPrincipal.getUsername());// custom user details object
 		// create JWT n send it to the clnt in response
+		
 		SigninResponse resp = new SigninResponse(jwtUtils.generateJwtToken(verifiedToken),
 				"success", request.getEmail());
 		return ResponseEntity.status(HttpStatus.CREATED).body(resp);

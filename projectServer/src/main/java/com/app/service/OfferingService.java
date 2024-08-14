@@ -21,7 +21,7 @@ public interface OfferingService {
 	
 	List<GetOfferingDto> getTopOfferings(double latitude, double longitude, OfferingType type, int limit);
 	
-	Offering getOfferingById(Long id); 
+	AddOfferingDto getOfferingById(Long id); 
 	
 	 List<OfferingReview> getReviewsByOfferingId(Long offeringId);
 }

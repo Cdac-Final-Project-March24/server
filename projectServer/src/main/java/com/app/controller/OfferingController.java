@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ import com.app.entity.OfferingReview;
 import com.app.entity.OfferingType;
 import com.app.service.OfferingService;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/offering")
 public class OfferingController {
@@ -45,7 +46,7 @@ public class OfferingController {
 				.body(offeringService.addOffering(bId, img, newProduct));
 	}
 	
-	// Get all products for a business
+	// Get all latest products for a business
 	@GetMapping(value = "/product/{bId}")
 	public ResponseEntity<?> getAllProducts(@PathVariable Long bId) throws IOException{
 		return ResponseEntity.status(HttpStatus.OK)
@@ -121,8 +122,8 @@ public class OfferingController {
 	
 	//get offering details 
 	@GetMapping("/{id}")
-	public ResponseEntity<Offering> getOfferingById(@PathVariable("id") Long id) {
-	    Offering offering = offeringService.getOfferingById(id);
-	    return ResponseEntity.ok(offering);
+	public ResponseEntity<?> getOfferingById(@PathVariable("id") Long id) {
+	    return ResponseEntity.status(HttpStatus.OK)
+	    		.body(offeringService.getOfferingById(id));
 	}
 }

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.service.FeedbackService;
 import com.app.service.UserService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/feedback")
-@CrossOrigin
 public class FeedbackController {
 
 	@Autowired

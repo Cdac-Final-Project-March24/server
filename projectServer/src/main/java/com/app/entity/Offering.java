@@ -55,14 +55,10 @@ public class Offering extends BaseEntity {
     @Column(length = 255) // Adjust length as needed
     private String usefulness;
 
-    @Column(nullable = false)
+    @Column
     private double rating; // Non-integral type for fractional values, use double or float
 
-    @ElementCollection
-    @CollectionTable(name = "offering_benefits", joinColumns = @JoinColumn(name = "offering_id"))
-    @Column(name = "benefit")
-    private List<String> benefits;
-    
+    private String benifit;
     
     @OneToMany(mappedBy = "offering", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OfferingReview> reviews;

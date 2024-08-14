@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.entity.Status;
 import com.app.service.OrderService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/order")
-@CrossOrigin
 public class OrderController {
 
 	@Autowired

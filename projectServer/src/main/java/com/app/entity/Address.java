@@ -17,7 +17,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Address extends BaseEntity {
 	
-	@Column(nullable = false, length = 30)
+	@Column(nullable = false)
 	private String address;
 	
 	@Column(nullable = false, length = 20)

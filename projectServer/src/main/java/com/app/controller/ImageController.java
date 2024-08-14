@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.app.service.ImageHandelingService;
 
 
+@CrossOrigin
 @RestController
 @RequestMapping("/images")
-@CrossOrigin
 public class ImageController {
 	
 	@Autowired

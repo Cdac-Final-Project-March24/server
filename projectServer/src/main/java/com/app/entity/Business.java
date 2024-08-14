@@ -30,7 +30,7 @@ public class Business extends BaseEntity {
 	private String description;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "owner_id", nullable = false)
+	@JoinColumn(name = "owner_id", nullable = false, unique = true)
 	private User owner;
 	
 	private Long orderCount = 0L;
