@@ -2,6 +2,7 @@ package com.app.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -14,10 +15,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dao.BusinessDao;
+import com.app.dao.OfferingDao;
 import com.app.dao.UserDao;
 import com.app.dto.AddBusinessDto;
 import com.app.dto.ApiResponse;
 import com.app.entity.Business;
+import com.app.entity.Offering;
+import com.app.entity.OfferingType;
 import com.app.entity.User;
 
 @Service
@@ -31,6 +35,9 @@ public class BusinessServiceImpl implements BusinessService {
 	private ModelMapper mapper;
 	@Autowired
 	private ImageHandelingService imageService;
+	
+	@Autowired
+	private OfferingDao offeringDao;
 
 	@Override
 	public ApiResponse updateBusiness(AddBusinessDto newBusiness, MultipartFile img, Long bId) throws IOException {
@@ -65,4 +72,45 @@ public class BusinessServiceImpl implements BusinessService {
 				.collect(Collectors.toList());
 	}
 
+	@Override
+	public Optional<Business> getBusinessDetails(Long Id) {
+		Optional<Business> business = businessDao.findById(Id);
+		return business;
+	}
+
+	@Override
+	public List<Offering> getMostPreferredOffering(OfferingType Type, Long Business_ID){
+		List<Offering> mostPrefOff = offeringDao.findMostPreferredOffering(Type,Business_ID);
+		return mostPrefOff;
+	}
+	
+	@Override
+	@Transactional
+    public boolean softDeleteBusiness(Long id) {
+        Optional<Business> businessOpt = businessDao.findById(id);
+
+        if (businessOpt.isPresent()) {
+            Business business = businessOpt.get();
+            business.setDeleted(true);
+            businessDao.save(business);
+            return true;
+        } else {
+            return false;
+        }
+    }
+	
+	@Override
+	@Transactional
+    public boolean softRestoreBusiness(Long id) {
+        Optional<Business> businessOpt = businessDao.findById(id);
+
+        if (businessOpt.isPresent()) {
+            Business business = businessOpt.get();
+            business.setDeleted(false);
+            businessDao.save(business);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

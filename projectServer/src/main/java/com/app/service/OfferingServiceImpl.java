@@ -2,6 +2,7 @@ package com.app.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -21,6 +22,7 @@ import com.app.dto.ApiResponse;
 import com.app.dto.GetOfferingDto;
 import com.app.entity.Business;
 import com.app.entity.Offering;
+import com.app.entity.OfferingReview;
 import com.app.entity.OfferingType;
 
 @Service
@@ -77,4 +79,21 @@ public class OfferingServiceImpl implements OfferingService {
 				.stream().map(o -> mapper.map(o, GetOfferingDto.class))
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public Offering getOfferingById(Long id) { //get offering deatil..
+		 Optional<Offering> offering = offeringDao.findById(id);
+	        if (offering.isPresent()) {
+	            return offering.get();
+	        } else {
+	            throw new RuntimeException("Offering not found for id :: " + id);
+	        }
+		
+	}
+	
+	@Override
+    public List<OfferingReview> getReviewsByOfferingId(Long offeringId) { //get offering reviews.
+        Offering offering = getOfferingById(offeringId); 
+        return offering.getReviews(); 
+    }
 }
