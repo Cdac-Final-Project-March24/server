@@ -1,5 +1,7 @@
 package com.app.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -39,6 +42,9 @@ public class User extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(length = 10)
 	private Role role;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OfferingReview> reviews;
 	
 	@OneToOne(fetch = FetchType.LAZY, optional = false, 
 			orphanRemoval = true, cascade = CascadeType.ALL)

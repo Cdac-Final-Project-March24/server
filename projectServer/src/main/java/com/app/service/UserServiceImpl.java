@@ -42,5 +42,24 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	
+	@Override
+	public User updateUser(Long id, String name, String email, String password, String mobileNumber, Address address) {
+        User user = userDao.findById(id).orElseThrow(() -> new RuntimeException("User not found for id :: " + id));
+        
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setMobileNumber(mobileNumber);
+        user.setAddress(address);
+
+        return userDao.save(user); // Save the updated user
+    }
+
+
+	@Override
+	public User getUserById(Long id) {
+		 return userDao.findById(id)
+	                .orElseThrow(() -> new RuntimeException("User not found for id :: " + id));
+	}
 
 }

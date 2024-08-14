@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.app.dto.AddOfferingDto;
+import com.app.entity.Offering;
+import com.app.entity.OfferingReview;
 import com.app.entity.OfferingType;
 import com.app.service.OfferingService;
 
@@ -107,4 +110,19 @@ public class OfferingController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(offeringService.getTopOfferings(latitude, longitude, OfferingType.SERVICE, 10));
 	}
+	
+	
+	//get offering reviews . 
+	@GetMapping("/{id}/reviews")
+    public ResponseEntity<List<OfferingReview>> getReviewsByOfferingId(@PathVariable("id") Long id) {
+        List<OfferingReview> reviews = offeringService.getReviewsByOfferingId(id);
+        return ResponseEntity.ok(reviews);
+    }
+	
+	//get offering details 
+	  @GetMapping("/{id}")
+	    public ResponseEntity<Offering> getOfferingById(@PathVariable("id") Long id) {
+	        Offering offering = offeringService.getOfferingById(id);
+	        return ResponseEntity.ok(offering);
+	    }
 }
