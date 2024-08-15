@@ -15,7 +15,7 @@ public interface OfferingDao extends JpaRepository<Offering, Long> {
 	@Query("SELECT o from Offering o where o.business.id=:id and o.type=:type")
 	List<Offering> findByBusinessIdAndType(Long id, OfferingType type, Sort sort);
 	
-	@Query("SELECT o FROM Offering o where o.type=:type and o.business.owner.address.distance(:latitude, :longitude) <= 10000")
+	@Query("SELECT o FROM Offering o where o.type=:type and GETDISTANCE(:latitude, :longitude, o.business.owner.address.latitude, o.business.owner.address.longitude) <= 10000")
 	List<Offering> findTopClosest(OfferingType type, double latitude, double longitude, Pageable pageable);
 	
 	

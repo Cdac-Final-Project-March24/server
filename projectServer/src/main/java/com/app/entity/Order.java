@@ -39,15 +39,14 @@ public class Order extends BaseEntity {
 	private Set<SubOrder> subOrder = new HashSet<SubOrder>();
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="payment_id",nullable = false)
+	@JoinColumn(name="payment_id")
 	private Payment payment;
 	
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
-	@OneToOne(fetch = FetchType.LAZY, optional = false, 
-			orphanRemoval = true, cascade = CascadeType.ALL)
-	@JoinColumn
+	@OneToOne(orphanRemoval = true, cascade = CascadeType.ALL)
+	@JoinColumn(nullable = true)
 	private Address address;
 	
 	// Add and remove for bi directional relationship

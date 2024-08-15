@@ -1,7 +1,9 @@
 package com.app.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +15,14 @@ import com.app.dao.OfferingDao;
 import com.app.dao.OrderDao;
 import com.app.dao.SubOrderDao;
 import com.app.dao.UserDao;
+import com.app.dto.AddBusinessDto;
 import com.app.dto.ApiResponse;
+import com.app.dto.OrderDto;
+import com.app.dto.SubOrderDto;
 import com.app.entity.Business;
 import com.app.entity.Offering;
 import com.app.entity.Order;
+import com.app.entity.Payment;
 import com.app.entity.Status;
 import com.app.entity.SubOrder;
 import com.app.entity.User;
@@ -34,10 +40,16 @@ public class OrderServiceImpl implements OrderService {
 	OfferingDao offeringDao;
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	private ModelMapper mapper;
 
 	@Override
-	public List<Order> getAllOrders(Long bId) {
-		return orderDao.getAllOrdersByBId(bId);
+	public List<OrderDto> getAllOrders(Long bId) {
+		return orderDao.getAllOrdersByBId(bId).stream().map(o -> {
+					OrderDto dto = mapper.map(o, OrderDto.class);
+					dto.setCustomerName(o.getCustomer().getName());
+					return dto;
+				}).collect(Collectors.toList());
 	}
 	
 	@Override
@@ -51,12 +63,12 @@ public class OrderServiceImpl implements OrderService {
 	}
 	
 	@Override
-	public ApiResponse addToCart(Long customerId, Long businessId, Long offeringId) {
+	public ApiResponse addToCart(String email, Long businessId, Long offeringId) {
 		Business business = businessDao.findById(businessId)
 				.orElseThrow(()->new ResourceNotFoundException("Invalid Business Id"));
-		User customer = userDao.findById(customerId)
+		User customer = userDao.findByEmail(email)
 				.orElseThrow(()->new ResourceNotFoundException("Invalid User Id"));
-		Offering offering = offeringDao.findById(businessId)
+		Offering offering = offeringDao.findById(offeringId)				
 				.orElseThrow(()->new ResourceNotFoundException("Invalid Offering Id"));
 		Order order = orderDao.findByCustomerAndStatus(customer, Status.UNPLACED).orElse(null);
 		SubOrder sub = subOrderDao.findByOrderAndOffering(order, offering)
@@ -77,5 +89,29 @@ public class OrderServiceImpl implements OrderService {
 		else sub.setQuantity(sub.getQuantity()+1);
 		
 		return new ApiResponse("Added to Cart");
+	}
+
+	@Override
+	public ApiResponse placeOrder(Payment payment, Long id) {
+		Order order = orderDao.findById(id)
+				.orElseThrow(()-> new ResourceNotFoundException("Invalid order id"));
+		order.setPayment(payment);
+		order.setAddress(order.getCustomer().getAddress());
+		order.setStatus(Status.PENDING);
+		return new ApiResponse("Order placed successfully");
+	}
+
+	@Override
+	public OrderDto getCart(String email) {
+		User customer = userDao.findByEmail(email)
+				.orElseThrow(()->new ResourceNotFoundException("Invalid User Id"));
+		Order order = orderDao.findByCustomerAndStatus(customer, Status.UNPLACED)
+				.orElseThrow(()-> new ResourceNotFoundException("Cart is empty"));
+		order.getSubOrder().size();
+		OrderDto orderDto = mapper.map(order, OrderDto.class);
+//		order.getSubOrder().forEach(s -> orderDto.getSubOrder().add(mapper.map(s, SubOrderDto.class)));
+//		orderDto.setBusiness(mapper.map(order.getBusiness(), AddBusinessDto.class));
+		orderDto.setCustomerName(order.getCustomer().getName());
+		return orderDto;
 	}
 }

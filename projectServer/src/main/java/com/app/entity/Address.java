@@ -36,17 +36,17 @@ public class Address extends BaseEntity {
 	
 	private Double latitude;
 	
-	public double distance(double latitude, double longitude) {
-		double dLat = Math.toRadians(latitude - this.latitude);
-        double dLon = Math.toRadians(longitude - this.longitude);
-
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                   Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(latitude)) *
-                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return 6371000.0 * c;
-	}
-	
+//	public double distance(double latitude, double longitude) {
+//		double dLat = Math.toRadians(latitude - this.latitude);
+//        double dLon = Math.toRadians(longitude - this.longitude);
+//
+//        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+//                   Math.cos(Math.toRadians(this.latitude)) * Math.cos(Math.toRadians(latitude)) *
+//                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
+//
+//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//
+//        return 6371000.0 * c;
+//	}
+//	
 }

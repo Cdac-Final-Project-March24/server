@@ -23,6 +23,7 @@ import com.app.dto.GetOfferingDto;
 import com.app.entity.Business;
 import com.app.entity.Offering;
 import com.app.entity.OfferingType;
+import com.app.entity.Role;
 import com.app.entity.User;
 
 @Service
@@ -61,6 +62,7 @@ public class BusinessServiceImpl implements BusinessService {
 		String path = imageService.saveImage(img); // save image and get its path
 		business.setCover((("http://localhost:8080/").concat(path)));
 		businessDao.save(business);
+		owner.setRole(Role.ROLE_OWNER);
 		return new ApiResponse("Business Added successfully");
 	}
 	
@@ -117,6 +119,7 @@ public class BusinessServiceImpl implements BusinessService {
 	
 	@Override
 	public AddBusinessDto getBusinessByOwner(String email) {
+		System.out.println(email);
 		User user = userDao.findByEmail(email)
 				.orElseThrow(()-> new ResourceNotFoundException("Invalid user"));
 		Business business = businessDao.findByOwner(user)
