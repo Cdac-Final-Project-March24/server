@@ -22,6 +22,6 @@ public interface OfferingDao extends JpaRepository<Offering, Long> {
 	@Query("SELECT o FROM Offering o WHERE o.business.id = :id AND o.type = :type ORDER BY o.orderCount DESC")
 	List<Offering> findMostPreferredOffering(@Param("type") OfferingType type, @Param("id") long id);
 	
-	  List<Offering> findByName(String name);
+	List<Offering> findByNameContaining(String name);
 
 }

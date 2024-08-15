@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.app.custom_exception.ResourceNotFoundException;
 import com.app.dao.BusinessDao;
 import com.app.dao.OfferingDao;
+import com.app.dto.AddBusinessDto;
 import com.app.dto.AddOfferingDto;
 import com.app.dto.ApiResponse;
 import com.app.dto.GetOfferingDto;
@@ -99,17 +100,15 @@ public class OfferingServiceImpl implements OfferingService {
 	
 
 	@Override
-	  public List<Business> getRelatedBusinessesByOfferingName(String offeringName) {
+	  public List<AddBusinessDto> getRelatedBusinessesByOfferingName(String offeringName) {
 	        // Find all offerings by name
-	        List<Offering> offerings = offeringDao.findByName(offeringName);
+	        List<Offering> offerings = offeringDao.findByNameContaining(offeringName);
 
 	        // Extract business IDs from offerings
-	        List<Long> businessIds = offerings.stream()
-	                .map(offering -> offering.getBusiness().getId())
+	       return  offerings.stream()
+	                .map(offering -> mapper.map(offering.getBusiness(),AddBusinessDto.class ))
 	                .distinct() // Ensure unique business IDs
 	                .collect(Collectors.toList());
-
-	        // Fetch all businesses with those IDs
-	        return businessDao.findByIdIn(businessIds);
+	       
 	    }
 }

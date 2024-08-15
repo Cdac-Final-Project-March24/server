@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.app.dto.AddBusinessDto;
 import com.app.dto.AddOfferingDto;
 import com.app.dto.ApiResponse;
 import com.app.dto.GetOfferingDto;
@@ -26,5 +27,5 @@ public interface OfferingService {
 	
 	 List<OfferingReview> getReviewsByOfferingId(Long offeringId);
 	 
-	 List<Business> getRelatedBusinessesByOfferingName(String offeringName);
+	 List<AddBusinessDto> getRelatedBusinessesByOfferingName(String offeringName);
 }
