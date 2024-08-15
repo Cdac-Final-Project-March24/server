@@ -2,6 +2,7 @@ package com.app.dto;
 
 import javax.validation.constraints.NotEmpty;
 
+import com.app.entity.Address;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -24,4 +25,7 @@ public class AddBusinessDto {
 	
 	@JsonProperty(access = Access.READ_ONLY)
 	private String cover;
+	
+	@JsonProperty(access = Access.READ_ONLY)
+	private Address address;
 }

@@ -127,4 +127,13 @@ public class OfferingController {
 	    return ResponseEntity.status(HttpStatus.OK)
 	    		.body(offeringService.getOfferingById(id));
 	}
+	
+	@GetMapping("/GetRelatedBusiness/{name}")
+	public ResponseEntity<?> getOfferingById(@PathVariable String name) {
+		System.out.println("Endpoint hit ");
+		System.out.println(name);
+	    return ResponseEntity.status(HttpStatus.OK)
+	    		.body(offeringService.getRelatedBusinessesByOfferingName(name));
+	}
+	
 }
