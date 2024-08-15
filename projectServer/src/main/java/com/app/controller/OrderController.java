@@ -27,6 +27,7 @@ public class OrderController {
 	@Autowired
 	private OrderService orderService;
 	
+	// Get all orders For a particular business which are placed
 	@GetMapping("/{bId}")
 	public ResponseEntity<?> getAllOrders(@PathVariable Long bId){
 		return ResponseEntity.status(HttpStatus.OK)
