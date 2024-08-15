@@ -85,9 +85,10 @@ public class OfferingController {
 				.body(offeringService.addOffering(bId, img, newProduct));
 	}
 	
-	// Get all services for a business
+	// Get all latest services for a business
 	@GetMapping(value = "/service/{bId}")
 	public ResponseEntity<?> getAllServices(@PathVariable Long bId) throws IOException{
+		System.out.println("Endpoint hit");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(offeringService.getAllOfferings(bId, OfferingType.SERVICE));
 	}
