@@ -18,7 +18,7 @@ public interface BusinessService {
 	ApiResponse addBusiness(AddBusinessDto newBusiness, MultipartFile img, String email) throws IOException;
 	ApiResponse updateBusiness(AddBusinessDto newBusiness, MultipartFile img, Long bId) throws IOException;
 	List<AddBusinessDto> getTopBusiness(double latitude, double longitude, int limit);
-	Optional<Business> getBusinessDetails(Long Id);
+	AddBusinessDto getBusinessDetails(Long Id);
 	List<GetOfferingDto> getMostPreferredOffering(OfferingType Type, Long Business_ID);
 	boolean softDeleteBusiness(Long id);
 	boolean softRestoreBusiness(Long id);

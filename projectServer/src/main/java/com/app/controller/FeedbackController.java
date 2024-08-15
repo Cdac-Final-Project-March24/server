@@ -22,6 +22,7 @@ public class FeedbackController {
 	
 	@GetMapping("/{bId}")
 	public ResponseEntity<?> getFeedback(@PathVariable Long bId){
+		System.out.println("Endpoint hit ");
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(feedbackService.getFeedback(bId));
 	}

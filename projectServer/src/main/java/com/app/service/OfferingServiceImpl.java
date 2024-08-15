@@ -96,4 +96,20 @@ public class OfferingServiceImpl implements OfferingService {
         		.orElseThrow(()-> new ResourceNotFoundException("Invalid Offering id"));; 
         return offering.getReviews(); 
     }
+	
+
+	@Override
+	  public List<Business> getRelatedBusinessesByOfferingName(String offeringName) {
+	        // Find all offerings by name
+	        List<Offering> offerings = offeringDao.findByName(offeringName);
+
+	        // Extract business IDs from offerings
+	        List<Long> businessIds = offerings.stream()
+	                .map(offering -> offering.getBusiness().getId())
+	                .distinct() // Ensure unique business IDs
+	                .collect(Collectors.toList());
+
+	        // Fetch all businesses with those IDs
+	        return businessDao.findByIdIn(businessIds);
+	    }
 }

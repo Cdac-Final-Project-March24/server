@@ -65,21 +65,22 @@ public class BusinessController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(businessService.getTopBusiness(latitude, longitude, 12));
 	}
-	@GetMapping("/business-details")
-	public ResponseEntity<?> getBussinessDetails(@RequestParam Long Id)
+	@GetMapping("/business-details/{Id}")
+	public ResponseEntity<?> getBussinessDetails(@PathVariable Long Id)
 	{
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(businessService.getBusinessDetails(Id)); //Add DTO to send exact details; 
 	}
 
-	@GetMapping("/MostPreferredProduct")
-	public ResponseEntity<?> getMostPreferredProduct(@RequestParam Long Id){
+	@GetMapping("/MostPreferredProduct/{Id}")
+	public ResponseEntity<?> getMostPreferredProduct(@PathVariable Long Id){
+		//System.out.println("Endpoint hit");
 		OfferingType type = OfferingType.PRODUCT;
 		return ResponseEntity.status(HttpStatus.OK).body(businessService.getMostPreferredOffering(type, Id));//Create DTO here as well
 	}
 
-	@GetMapping("/MostPreferredService")
-	public ResponseEntity<?> getMostPreferredService(@RequestParam Long Id){
+	@GetMapping("/MostPreferredService/{Id}")
+	public ResponseEntity<?> getMostPreferredService(@PathVariable Long Id){
 		OfferingType type = OfferingType.SERVICE;
 		return ResponseEntity.status(HttpStatus.OK).body(businessService.getMostPreferredOffering(type, Id));//Create DTO here as well
 	}

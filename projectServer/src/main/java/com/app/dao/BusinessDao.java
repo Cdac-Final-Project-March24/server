@@ -18,5 +18,7 @@ public interface BusinessDao extends JpaRepository<Business, Long> {
 	List<Business> findTopClosest(double latitude, double longitude, Pageable pageable);
 
 	Optional<Business> findByOwner(User owner);
+	
+	List<Business> findByIdIn(List<Long> ids);
 
 }

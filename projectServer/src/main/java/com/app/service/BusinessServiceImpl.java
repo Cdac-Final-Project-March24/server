@@ -68,6 +68,7 @@ public class BusinessServiceImpl implements BusinessService {
 	
 	@Override
 	public List<AddBusinessDto> getTopBusiness(double latitude, double longitude, int limit){
+		System.out.println(latitude + " " + longitude);
 		return businessDao
 				.findTopClosest(latitude, longitude, 
 						PageRequest.of(0, limit, Sort.by("orderCount").descending()))
@@ -76,9 +77,9 @@ public class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	public Optional<Business> getBusinessDetails(Long Id) {
-		Optional<Business> business = businessDao.findById(Id);
-		return business;
+	public AddBusinessDto getBusinessDetails(Long Id) {
+		Business business = businessDao.findById(Id).orElseThrow(()-> new ResourceNotFoundException("Business id invalid"));
+		return mapper.map(business, AddBusinessDto.class);
 	}
 
 	@Override
