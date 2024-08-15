@@ -127,4 +127,12 @@ public class BusinessServiceImpl implements BusinessService {
 				.orElseThrow(()-> new ResourceNotFoundException("Business not found"));
 		return mapper.map(business, AddBusinessDto.class);
 	}
+
+	@Override
+	public List<AddBusinessDto> findAllBusiness() {
+        return businessDao.findAll()
+                .stream()
+                .map(business -> mapper.map(business, AddBusinessDto.class))
+                .collect(Collectors.toList());
+    }
 }

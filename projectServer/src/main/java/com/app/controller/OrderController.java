@@ -57,6 +57,7 @@ public class OrderController {
 	
 	@GetMapping("/cart")
 	public ResponseEntity<?> getCart(){
+		System.out.println("Endpoint hittttt");
 		String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(orderService.getCart(email));
