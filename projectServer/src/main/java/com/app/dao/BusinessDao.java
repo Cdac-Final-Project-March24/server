@@ -19,6 +19,8 @@ public interface BusinessDao extends JpaRepository<Business, Long> {
 
 	Optional<Business> findByOwner(User owner);
 	
+	List<Business>findAll();
+	
 	/* List<Business> findByIdIn(List<Long> ids); */
 
 }

@@ -57,9 +57,9 @@ public class UserServiceImpl implements UserService {
 
 
 	@Override
-	public User getUserById(Long id) {
-		 return userDao.findById(id)
-	                .orElseThrow(() -> new RuntimeException("User not found for id :: " + id));
+	public User getUserByEmail(String Email) {
+		 return userDao.findByEmail(Email)
+	                .orElseThrow(() -> new RuntimeException("User not found for email :: " + Email));
 	}
 
 }

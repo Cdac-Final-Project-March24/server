@@ -8,5 +8,5 @@ import com.app.entity.User;
 public interface UserService {
 	ApiResponse addUser(AddUserDto newUser);
 	User updateUser(Long id, String name, String email, String password, String mobileNumber, Address address) ;
-	User getUserById(Long id);
+	User getUserByEmail(String Email);
 }

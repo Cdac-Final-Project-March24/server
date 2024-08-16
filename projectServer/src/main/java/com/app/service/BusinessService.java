@@ -23,5 +23,6 @@ public interface BusinessService {
 	boolean softDeleteBusiness(Long id);
 	boolean softRestoreBusiness(Long id);
 	AddBusinessDto getBusinessByOwner(String email);
+	List<AddBusinessDto> findAllBusiness();
 
 }

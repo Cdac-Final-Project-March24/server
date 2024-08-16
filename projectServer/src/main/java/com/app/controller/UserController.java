@@ -72,6 +72,7 @@ public class UserController {
 	// changes automatically front end will call get api written below.
 	@PutMapping("/{id}")
 	public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDto request) {
+		System.out.println("End point hiitttt");
 		User updatedUser = userService.updateUser(
 				id,
 				request.getName(),
@@ -82,9 +83,10 @@ public class UserController {
 		return ResponseEntity.ok(updatedUser);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
-		User user = userService.getUserById(id);
+	@GetMapping("/{email}")
+	public ResponseEntity<User> getUserByEmail(@PathVariable("email") String email) {
+		System.out.println("End point hit ");
+		User user = userService.getUserByEmail(email);
 		return ResponseEntity.ok(user);
 	}
 }

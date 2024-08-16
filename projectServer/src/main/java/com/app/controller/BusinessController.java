@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,8 +94,9 @@ public class BusinessController {
 	}
 	
 	
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<String> deleteBusiness(@PathVariable("id") Long id) {
+		System.out.println("Api hit");
 		boolean isDeleted = businessService.softDeleteBusiness(id);
 
 		if (isDeleted) {
@@ -114,5 +116,12 @@ public class BusinessController {
 			return ResponseEntity.status(404).body("Business not found or not deleted");
 		}
 	}
+	
+	@GetMapping("/getAllBusiness")
+	  public ResponseEntity<List<AddBusinessDto>> getAllBusinesses() {
+			
+	        List<AddBusinessDto> businesses = businessService.findAllBusiness();
+	        return ResponseEntity.ok(businesses);
+	    }
 
 }
