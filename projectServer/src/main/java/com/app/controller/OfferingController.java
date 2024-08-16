@@ -128,7 +128,7 @@ public class OfferingController {
 	    		.body(offeringService.getOfferingById(id));
 	}
 	
-	@GetMapping("/GetRelatedBusiness/{name}")
+	@GetMapping("/related-businesses/{name}")
 	public ResponseEntity<?> getOfferingById(@PathVariable String name) {
 		System.out.println("Endpoint hit ");
 		System.out.println(name);

@@ -14,7 +14,7 @@ import com.app.entity.User;
 
 public interface BusinessDao extends JpaRepository<Business, Long> {
 	
-	@Query("SELECT b FROM Business b WHERE GETDISTANCE(:latitude, :longitude, b.owner.address.latitude, b.owner.address.longitude) <= 10000.00")
+	@Query("SELECT b FROM Business b WHERE GETDISTANCE(:latitude, :longitude, b.owner.address.latitude, b.owner.address.longitude) <= 30000.00")
 	List<Business> findTopClosest(double latitude, double longitude, Pageable pageable);
 
 	Optional<Business> findByOwner(User owner);
