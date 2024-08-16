@@ -44,12 +44,12 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public UpdateUserRequestDto updateUser(String email) {
-        User user = userDao.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        
-        
-        userDao.save(user); // Save the updated user
-        return mapper.map(user, UpdateUserRequestDto.class);
+	public ApiResponse updateUser(String email, UpdateUserRequestDto request) {
+        User user = userDao.findByEmail(email)
+        		.orElseThrow(() -> new RuntimeException("User not found"));
+        mapper.map(request, user);
+        user.getAddress().setAddress(request.getAddress());
+        return new ApiResponse("Profile updated successfully");
     }
 
 

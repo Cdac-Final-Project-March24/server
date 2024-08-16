@@ -8,6 +8,6 @@ import com.app.entity.User;
 
 public interface UserService {
 	ApiResponse addUser(AddUserDto newUser);
-	UpdateUserRequestDto updateUser(String email) ;
 	AddUserDto getUserByEmail(String Email);
+	ApiResponse updateUser(String email, UpdateUserRequestDto request);
 }

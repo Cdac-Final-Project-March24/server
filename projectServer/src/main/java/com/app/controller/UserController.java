@@ -74,8 +74,8 @@ public class UserController {
 	public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDto request) {
 		System.out.println("End point hiitttt");
 		String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UpdateUserRequestDto updatedUser = userService.updateUser(email);
-		return ResponseEntity.ok(updatedUser);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(userService.updateUser(email, request));
 	}
 
 	@GetMapping

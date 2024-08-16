@@ -17,7 +17,6 @@ import lombok.ToString;
 public class UpdateUserRequestDto {
     private String name;
     private String email;
-    private String password;
     private String mobileNumber;
-    private Address address;
+    private String address;
 }
