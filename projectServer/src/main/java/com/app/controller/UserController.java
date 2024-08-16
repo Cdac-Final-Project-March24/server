@@ -70,23 +70,19 @@ public class UserController {
 
 	// for updating user profile , first we will call this api, and on confirming
 	// changes automatically front end will call get api written below.
-	@PutMapping("/{id}")
-	public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody UpdateUserRequestDto request) {
+	@PutMapping
+	public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequestDto request) {
 		System.out.println("End point hiitttt");
-		User updatedUser = userService.updateUser(
-				id,
-				request.getName(),
-				request.getEmail(),
-				request.getPassword(),
-				request.getMobileNumber(),
-				request.getAddress());
+		String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UpdateUserRequestDto updatedUser = userService.updateUser(email);
 		return ResponseEntity.ok(updatedUser);
 	}
 
-	@GetMapping("/{email}")
-	public ResponseEntity<User> getUserByEmail(@PathVariable("email") String email) {
-		System.out.println("End point hit ");
-		User user = userService.getUserByEmail(email);
+	@GetMapping
+	public ResponseEntity<?> getUserByEmail() {
+		System.out.println("End point hit");
+		String email = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		AddUserDto user = userService.getUserByEmail(email);
 		return ResponseEntity.ok(user);
 	}
 }
