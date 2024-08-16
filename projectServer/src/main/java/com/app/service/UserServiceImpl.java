@@ -10,6 +10,7 @@ import com.app.custom_exception.DuplicateException;
 import com.app.dao.UserDao;
 import com.app.dto.AddUserDto;
 import com.app.dto.ApiResponse;
+import com.app.dto.UpdateUserRequestDto;
 import com.app.entity.Address;
 import com.app.entity.User;
 
@@ -43,23 +44,24 @@ public class UserServiceImpl implements UserService {
 	
 	
 	@Override
-	public User updateUser(Long id, String name, String email, String password, String mobileNumber, Address address) {
-        User user = userDao.findById(id).orElseThrow(() -> new RuntimeException("User not found for id :: " + id));
+	public UpdateUserRequestDto updateUser(String email) {
+        User user = userDao.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
         
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setMobileNumber(mobileNumber);
-        user.setAddress(address);
-
-        return userDao.save(user); // Save the updated user
+        
+        userDao.save(user); // Save the updated user
+        return mapper.map(user, UpdateUserRequestDto.class);
     }
 
 
 	@Override
-	public User getUserByEmail(String Email) {
-		 return userDao.findByEmail(Email)
-	                .orElseThrow(() -> new RuntimeException("User not found for email :: " + Email));
+	public AddUserDto getUserByEmail(String Email) {
+		 User user = userDao.findByEmail(Email)
+	                .orElseThrow(() -> new RuntimeException("User not found"));
+		 AddUserDto dto = mapper.map(user,AddUserDto.class);
+		 mapper.map(user.getAddress(), dto);
+		 //dto.setAddress(user.getAddress().getAddress());
+		 System.out.println(dto);
+		 return dto;
 	}
 
 }

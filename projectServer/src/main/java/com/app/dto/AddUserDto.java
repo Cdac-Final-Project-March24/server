@@ -7,6 +7,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 import com.app.entity.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,9 +51,11 @@ public class AddUserDto {
 	@NotEmpty(message = "User Zip cannot be blank")
 	private String zip;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull(message = "Latitude cannot be blank")
 	private Double longitude;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull(message = "Longitude cannot be blank")
 	private Double latitude;
 }
