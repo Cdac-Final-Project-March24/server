@@ -54,7 +54,6 @@ public class BusinessController {
 	public ResponseEntity<?> updateBusiness(@PathVariable Long bId,
 			@RequestPart(required = false) @Valid AddBusinessDto newBusiness,
 			@RequestPart(required = false) MultipartFile img)throws IOException{
-
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(businessService.updateBusiness(newBusiness, img, bId));

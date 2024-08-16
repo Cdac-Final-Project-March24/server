@@ -46,7 +46,7 @@ public class BusinessServiceImpl implements BusinessService {
 		Business orignalBusiness = businessDao.findById(bId)
 				.orElseThrow(()-> new ResourceNotFoundException("Invalid Business Id"));
 		mapper.map(newBusiness, orignalBusiness);
-		if(img.getOriginalFilename() != null && !img.getOriginalFilename().isBlank()) {
+		if(img != null && img.getOriginalFilename() != null && !img.getOriginalFilename().isBlank()) {
 			String path = imageService.saveImage(img);
 			orignalBusiness.setCover(("http://localhost:8080/").concat(path));
 		}

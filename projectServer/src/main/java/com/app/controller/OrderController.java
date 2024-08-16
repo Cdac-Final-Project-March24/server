@@ -35,10 +35,10 @@ public class OrderController {
 	}
 	
 	@PutMapping("/status/{id}")
-	public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestParam Status status){
-//		System.out.println(status);
+	public ResponseEntity<?> updateOrderStatus(@PathVariable Long id, @RequestParam String status){
+		System.out.println(status);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(orderService.updateOrderStatus(status, id));
+				.body(orderService.updateOrderStatus(Status.valueOf(status), id));
 	}
 	
 	@PostMapping("/place-order/{id}")

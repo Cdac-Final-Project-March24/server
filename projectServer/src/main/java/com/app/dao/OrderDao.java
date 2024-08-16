@@ -12,7 +12,7 @@ import com.app.entity.Status;
 import com.app.entity.User;
 
 public interface OrderDao extends JpaRepository<Order, Long> {
-	@Query("select o from Order o left join fetch o.subOrder "
+	@Query("select distinct o from Order o left join fetch o.subOrder "
 			+ "where o.business.id = :bId and "
 			+ "o.status NOT IN (com.app.entity.Status.UNPLACED, com.app.entity.Status.CANCELLED, com.app.entity.Status.DELIVERED)"
 			+ "ORDER BY o.updatedOn")
