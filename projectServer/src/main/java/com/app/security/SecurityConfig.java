@@ -50,7 +50,7 @@ public class SecurityConfig {
 		// only required for JS clnts (react / angular) : for the pre flight requests
 		.antMatchers(HttpMethod.OPTIONS).permitAll()
 //		.antMatchers("/products/purchase/**").hasRole("CUSTOMER")
-//		.antMatchers("/products/add").hasRole("ADMIN")
+		.antMatchers("/business/delete", "/busness/restore", "/business/getAllBusiness").hasRole("ADMIN")
 		.anyRequest().authenticated()
 		.and()
 		//to tell spring sec : not to use HttpSession to store user's auth details
