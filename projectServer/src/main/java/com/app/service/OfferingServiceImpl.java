@@ -46,7 +46,7 @@ public class OfferingServiceImpl implements OfferingService {
 				.orElseThrow(() -> new ResourceNotFoundException("Invalid business id"));
 		Offering offering = mapper.map(newOffering, Offering.class);
 		offering.setBusiness(business);
-		offering.setImage(("http://65.0.138.174:8080/").concat(path)); // add url to image path
+		offering.setImage(("https://server-production-cdd5.up.railway.app/").concat(path)); // add url to image path
 		offeringDao.save(offering);
 		return new ApiResponse("Offering Added successfully");
 	}
@@ -69,7 +69,7 @@ public class OfferingServiceImpl implements OfferingService {
 		System.out.println(img);
 		if(img != null && img.getOriginalFilename() != null && !img.getOriginalFilename().isBlank()) {
 			String path = imageService.saveImage(img);
-			offering.setImage(("http://65.0.138.174:8080/").concat(path));
+			offering.setImage(("https://server-production-cdd5.up.railway.app/").concat(path));
 		}
 		
 		return new ApiResponse("Offering Updated successfully");
