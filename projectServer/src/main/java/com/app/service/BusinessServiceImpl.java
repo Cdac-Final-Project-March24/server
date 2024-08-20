@@ -48,7 +48,7 @@ public class BusinessServiceImpl implements BusinessService {
 		mapper.map(newBusiness, orignalBusiness);
 		if(img != null && img.getOriginalFilename() != null && !img.getOriginalFilename().isBlank()) {
 			String path = imageService.saveImage(img);
-			orignalBusiness.setCover(("http://localhost:8080/").concat(path));
+			orignalBusiness.setCover(("http://65.0.138.174:8080/").concat(path));
 		}
 		return new ApiResponse("Business Updated successfully");
 	}
@@ -60,7 +60,7 @@ public class BusinessServiceImpl implements BusinessService {
 				.orElseThrow(()->new ResourceNotFoundException("Invalid owner email"));
 		business.setOwner(owner);
 		String path = imageService.saveImage(img); // save image and get its path
-		business.setCover((("http://localhost:8080/").concat(path)));
+		business.setCover((("http://65.0.138.174:8080/").concat(path)));
 		businessDao.save(business);
 		owner.setRole(Role.ROLE_OWNER);
 		return new ApiResponse("Business Added successfully");

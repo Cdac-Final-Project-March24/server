@@ -122,6 +122,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>spring-boot-file</finalName>
 	</build>
 
 </project>
